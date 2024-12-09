@@ -1,19 +1,24 @@
 package com.example.remindme.ui
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.example.remindme.data.FakeDataStore
+import com.example.remindme.ui.screen.HomeScreen
+import com.example.remindme.ui.screen.LeftAlignedTopAppBar
 
 @Composable
 fun RemindMeApp(
     modifier: Modifier = Modifier
 ) {
-    Column {
-        Text(
-            text = "Remind Me",
-            style = MaterialTheme.typography.displayLarge
+    val listOfReminders = FakeDataStore.fakeReminders
+    Column{
+        LeftAlignedTopAppBar(title = "Remind Me")
+        HomeScreen(
+            listOfReminders,
+            modifier = Modifier.padding(8.dp)
         )
     }
 }
