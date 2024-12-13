@@ -6,8 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.remindme.data.FakeDataStore
+import com.example.remindme.data.Reminder
 import com.example.remindme.ui.screen.HomeScreen
 import com.example.remindme.ui.screen.LeftAlignedTopAppBar
+import com.example.remindme.ui.screen.NewReminder
 
 @Composable
 fun RemindMeApp(
@@ -16,9 +18,10 @@ fun RemindMeApp(
     val listOfReminders = FakeDataStore.fakeReminders
     Column{
         LeftAlignedTopAppBar(title = "Remind Me")
-        HomeScreen(
-            listOfReminders,
-            modifier = Modifier.padding(8.dp)
-        )
+        NewReminder(onReminderChange = {}, reminder = Reminder())
+//        HomeScreen(
+//            listOfReminders,
+//            modifier = Modifier.padding(8.dp)
+//        )
     }
 }
