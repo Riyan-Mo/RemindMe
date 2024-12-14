@@ -1,19 +1,19 @@
 package com.example.remindme.data
 
-import java.util.Date
+import java.time.LocalTime
 
 class FakeDataStore {
 
     companion object {
         private val reminder1 = Reminder(
             title ="Read Book",
-            due = Date(),
+            due = LocalTime.now(),
             type = Type.ONE_TIME,
             on = true
         )
         private val reminder2 = Reminder(
             title ="Wake Up",
-            due = Date(),
+            due = LocalTime.now(),
             type = Type.RECURRING,
             on = true
         )
