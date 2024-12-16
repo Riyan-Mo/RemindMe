@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,7 +33,7 @@ fun NewReminder(
     modifier: Modifier =  Modifier
 ) {
     val localTime = LocalTime.now()
-    val title by rememberSaveable {
+    var title by rememberSaveable {
         mutableStateOf("")
     }
     val timePickerState = rememberTimePickerState (
@@ -40,19 +41,17 @@ fun NewReminder(
         initialMinute = localTime.minute,
         is24Hour = true
     )
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(24.dp),
+        verticalArrangement = Arrangement.spacedBy(48.dp),
         modifier = modifier.fillMaxSize()
     ) {
         OutlinedTextField(
-            value = reminder.title,
-            onValueChange = { },
+            value = title,
+            onValueChange = { title = it },
             label = { Text(text = "Title")},
             modifier = modifier
         )
-
         TimeInput(
             state = timePickerState,
             modifier = modifier

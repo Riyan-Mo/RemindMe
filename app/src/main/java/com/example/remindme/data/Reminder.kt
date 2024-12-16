@@ -1,7 +1,6 @@
 package com.example.remindme.data
 
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 data class Reminder (
     val title: String = "",
@@ -10,8 +9,13 @@ data class Reminder (
     val on: Boolean = true
 ){
     fun getTime():String {
-        return due.format(DateTimeFormatter.ISO_INSTANT)
+        var hour = due.hour
+        var meridian = "AM"
+        if(due.hour>12) {
+            hour = due.hour - 12
+            meridian = "PM"
+        }
+        val timeString = "${hour}:${due.minute} $meridian"
+        return timeString
     }
 }
-
-

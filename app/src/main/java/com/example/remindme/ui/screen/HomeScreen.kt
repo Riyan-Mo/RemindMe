@@ -21,13 +21,14 @@ import com.example.remindme.ui.screen.components.ReminderItem
 @Composable
 fun HomeScreen(
     reminders: List<Reminder>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onFloatingButtonClicked: () -> Unit
 ) {
     Scaffold(
         modifier = modifier,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /*TODO*/ },
+                onClick = onFloatingButtonClicked,
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
