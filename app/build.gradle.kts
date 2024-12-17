@@ -63,6 +63,8 @@ dependencies {
     implementation(libs.androidx.ui.text.google.fonts)
     testImplementation(libs.junit)
     implementation("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
