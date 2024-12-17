@@ -1,6 +1,7 @@
 package com.example.remindme.ui.screen
 
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,13 +19,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.remindme.data.Reminder
 import com.example.remindme.data.Type
 import java.time.LocalTime
 
-@RequiresApi(Build.VERSION_CODES.O)
+fun validateInput(title: String): Boolean {
+    return title.isNotBlank()
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewReminder(
@@ -41,6 +46,8 @@ fun NewReminder(
         initialMinute = localTime.minute,
         is24Hour = true
     )
+    val context = LocalContext.current
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(48.dp),
@@ -57,14 +64,19 @@ fun NewReminder(
             modifier = modifier
         )
         Button(
-            onClick = { onSubmit(
-                Reminder(
-                    title = title,
-                    on = true,
-                    type = Type.ONE_TIME,
-                    due = LocalTime.of(timePickerState.hour, timePickerState.minute)
-                )
-            ) },
+            onClick = {
+                if(validateInput(title = title)){
+                    onSubmit(
+                        Reminder(
+                            title = title,
+                            on = true,
+                            type = Type.ONE_TIME,
+                            due = LocalTime.of(timePickerState.hour, timePickerState.minute)
+                        )
+                    )
+                } else {
+                  Toast.makeText(context, "Title is Empty", Toast.LENGTH_SHORT).show()
+                } },
             modifier = modifier
         ) {
             Text(
