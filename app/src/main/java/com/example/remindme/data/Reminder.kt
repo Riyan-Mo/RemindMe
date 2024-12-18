@@ -1,8 +1,13 @@
 package com.example.remindme.data
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.LocalTime
 
+@Entity(tableName = "reminder")
 data class Reminder (
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
     val title: String = "",
     var due: LocalTime = LocalTime.now(),
     val type: Type = Type.ONE_TIME,
