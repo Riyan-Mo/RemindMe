@@ -1,39 +1,42 @@
 package com.example.remindme.ui.screen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.remindme.RemindMeApplication
 import com.example.remindme.data.Reminder
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import com.example.remindme.data.ReminderDatabaseRepository
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 data class HomeScreenUiState(
-    var reminders: MutableList<Reminder> = mutableListOf()
+    var reminders: List<Reminder> = emptyList()
 )
 
-class HomeScreenViewModel: ViewModel() {
-    private val _uiState = MutableStateFlow(HomeScreenUiState())
-    val uiState: StateFlow<HomeScreenUiState> = _uiState.asStateFlow()
+class HomeScreenViewModel(
+    private val reminderDatabaseRepositoryImpl: ReminderDatabaseRepository
+): ViewModel() {
+    private val _uiState = reminderDatabaseRepositoryImpl.getAllReminders().map { HomeScreenUiState(it) }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = HomeScreenUiState()
+        )
+    val uiState = _uiState.value
 
-    fun addReminder(reminder: Reminder) {
-        _uiState.update {
-            val copyOfReminders = it.reminders
-            copyOfReminders.add(reminder)
-            Log.e("New Reminder", uiState.value.reminders.toString())
-            it.copy(reminders = copyOfReminders)
-        }
+    suspend fun addReminder(reminder: Reminder) {
+        reminderDatabaseRepositoryImpl.insertReminder(reminder)
     }
 
     companion object {
         val factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                HomeScreenViewModel()
+                val remindMeApp = (this[APPLICATION_KEY] as RemindMeApplication)
+                HomeScreenViewModel(remindMeApp.appContainer.reminderDatabaseRepository)
             }
         }
     }

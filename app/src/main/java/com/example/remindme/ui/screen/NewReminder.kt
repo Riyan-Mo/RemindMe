@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.example.remindme.data.Reminder
 import com.example.remindme.data.Type
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 fun validateInput(title: String): Boolean {
     return title.isNotBlank()
@@ -33,9 +34,8 @@ fun validateInput(title: String): Boolean {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewReminder(
-    onSubmit: (reminder: Reminder)->Unit,
-    reminder: Reminder,
-    modifier: Modifier =  Modifier
+    onSubmit: (reminder: Reminder) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val localTime = LocalTime.now()
     var title by rememberSaveable {
@@ -71,7 +71,8 @@ fun NewReminder(
                             title = title,
                             on = true,
                             type = Type.ONE_TIME,
-                            due = LocalTime.of(timePickerState.hour, timePickerState.minute)
+                            due = LocalTime.of(timePickerState.hour, timePickerState.minute).format(
+                                DateTimeFormatter.ofPattern("hh:mm"))
                         )
                     )
                 } else {
@@ -91,7 +92,6 @@ fun NewReminder(
 @Composable
 fun NewReminderPreview() {
     NewReminder(
-        onSubmit = {},
-        reminder = Reminder()
+        onSubmit = {}
     )
 }

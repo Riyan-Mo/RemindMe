@@ -24,7 +24,7 @@ import com.example.remindme.ui.screen.components.ReminderItem
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
-    reminders: MutableList<Reminder>,
+    reminders: List<Reminder>,
     modifier: Modifier = Modifier,
     onFloatingButtonClicked: () -> Unit
 ) {

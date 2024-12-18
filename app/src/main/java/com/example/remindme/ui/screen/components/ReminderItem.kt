@@ -59,7 +59,7 @@ fun ReminderItem(
                 )
             }
             Text(
-                text = reminder.getTime(),
+                text = reminder.due,
                 style = MaterialTheme.typography.titleMedium
             )
         }
