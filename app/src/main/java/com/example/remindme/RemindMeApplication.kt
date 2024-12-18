@@ -1,18 +1,15 @@
 package com.example.remindme
 
 import android.app.Application
-import com.example.remindme.data.ReminderDatabase
-import com.example.remindme.data.ReminderDatabaseRepositoryImpl
+import com.example.remindme.data.AppContainer
 
-class RemindMeApp: Application() {
+class RemindMeApplication: Application() {
 
-    private lateinit var reminderDatabase: ReminderDatabase
-    lateinit var reminderDatabaseRepositoryImpl: ReminderDatabaseRepositoryImpl
+    lateinit var appContainer: AppContainer
 
     override fun onCreate() {
         super.onCreate()
-        reminderDatabase = ReminderDatabase.getDatabase(this)
-        reminderDatabaseRepositoryImpl = ReminderDatabaseRepositoryImpl(reminderDatabase.dao())
+        appContainer = AppContainer(this)
     }
 
 }

@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,14 +19,15 @@ import com.example.remindme.ui.screen.HomeScreen
 import com.example.remindme.ui.screen.HomeScreenViewModel
 import com.example.remindme.ui.screen.LeftAlignedTopAppBar
 import com.example.remindme.ui.screen.NewReminder
+import kotlinx.coroutines.launch
 
 @Composable
 fun RemindMeApp(
     modifier: Modifier = Modifier,
     homeScreenViewModel: HomeScreenViewModel = viewModel(factory = HomeScreenViewModel.factory)
 ) {
-    val homeScreenUiState = homeScreenViewModel.uiState.collectAsStateWithLifecycle()
-    val listOfReminders = homeScreenUiState.value.reminders
+    val homeScreenUiState = homeScreenViewModel.uiState
+    val listOfReminders = homeScreenUiState.reminders
 
     val navController = rememberNavController()
 
@@ -44,10 +45,12 @@ fun RemindMeApp(
         return Navigation.valueOf(navBackStackEntry?.destination?.route?:"HOME")
     }
 
-    fun addNewReminder(reminder: Reminder) {
+    suspend fun addNewReminder(reminder: Reminder) {
         homeScreenViewModel.addReminder(reminder)
         navigateBack()
     }
+
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -56,8 +59,9 @@ fun RemindMeApp(
         NavHost(navController = navController, startDestination = Navigation.HOME.name) {
             composable(Navigation.ADD_NEW_REMINDER.name) {
                 NewReminder(
-                    onSubmit = { addNewReminder(it) },
-                    reminder = Reminder()
+                    onSubmit = { coroutineScope.launch {
+                        addNewReminder(it)
+                    } }
                 )
             }
             composable(Navigation.HOME.name) {
