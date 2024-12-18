@@ -59,10 +59,10 @@ fun RemindMeApp(
         LeftAlignedTopAppBar(title = getCurrentRoute().title, navigateBack= {navigateBack()})
         NavHost(navController = navController, startDestination = Navigation.HOME.name) {
             composable(Navigation.ADD_NEW_REMINDER.name) {
+                val reminder = Reminder()
                 NewReminder(
-                    onSubmit = { coroutineScope.launch {
-                        addNewReminder(it)
-                    } }
+                    onSubmit = { coroutineScope.launch { addNewReminder(it) } },
+                    reminder
                 )
             }
             composable(Navigation.HOME.name) {
