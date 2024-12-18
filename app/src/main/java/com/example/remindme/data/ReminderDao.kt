@@ -1,17 +1,18 @@
 package com.example.remindme.data
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ReminderDao {
 
-    @Query("Select * from reminder ORDER BY due")
+    @Query("Select * from reminder")
     fun getAllReminders(): Flow<List<Reminder>>
 
-    @Upsert
-    fun insertReminder(reminder: Reminder)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertReminder(reminder: Reminder)
 
 }

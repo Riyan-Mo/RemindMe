@@ -18,18 +18,17 @@ data class HomeScreenUiState(
 )
 
 class HomeScreenViewModel(
-    private val reminderDatabaseRepositoryImpl: ReminderDatabaseRepository
+    private val reminderDatabaseRepository: ReminderDatabaseRepository
 ): ViewModel() {
-    private val _uiState = reminderDatabaseRepositoryImpl.getAllReminders().map { HomeScreenUiState(it) }
+    private val _uiState = reminderDatabaseRepository.getAllRemindersStream().map { HomeScreenUiState(it) }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(),
+            started = SharingStarted.WhileSubscribed(5000L),
             initialValue = HomeScreenUiState()
         )
-    val uiState = _uiState.value
-
+    val uiState = _uiState
     suspend fun addReminder(reminder: Reminder) {
-        reminderDatabaseRepositoryImpl.insertReminder(reminder)
+        reminderDatabaseRepository.insertReminder(reminder)
     }
 
     companion object {

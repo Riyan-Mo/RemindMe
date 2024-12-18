@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -27,7 +28,7 @@ fun RemindMeApp(
     homeScreenViewModel: HomeScreenViewModel = viewModel(factory = HomeScreenViewModel.factory)
 ) {
     val homeScreenUiState = homeScreenViewModel.uiState
-    val listOfReminders = homeScreenUiState.reminders
+    val listOfReminders = homeScreenUiState.collectAsState().value.reminders
 
     val navController = rememberNavController()
 

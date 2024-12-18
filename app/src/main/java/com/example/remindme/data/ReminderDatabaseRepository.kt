@@ -3,7 +3,7 @@ package com.example.remindme.data
 import kotlinx.coroutines.flow.Flow
 
 interface ReminderDatabaseInterface{
-    fun getAllReminders(): Flow<List<Reminder>>
+    fun getAllRemindersStream(): Flow<List<Reminder>>
 
     suspend fun insertReminder(reminder: Reminder): Unit
 }
@@ -11,7 +11,7 @@ interface ReminderDatabaseInterface{
 class ReminderDatabaseRepository(
     private val reminderDao: ReminderDao
 ): ReminderDatabaseInterface {
-    override fun getAllReminders(): Flow<List<Reminder>> {
+    override fun getAllRemindersStream(): Flow<List<Reminder>> {
         return reminderDao.getAllReminders()
     }
 

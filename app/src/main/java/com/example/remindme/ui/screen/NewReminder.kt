@@ -71,8 +71,7 @@ fun NewReminder(
                             title = title,
                             on = true,
                             type = Type.ONE_TIME,
-                            due = LocalTime.of(timePickerState.hour, timePickerState.minute).format(
-                                DateTimeFormatter.ofPattern("hh:mm"))
+                            due = "${timePickerState.hour}:${timePickerState.minute}"
                         )
                     )
                 } else {
