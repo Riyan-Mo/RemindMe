@@ -69,6 +69,11 @@ fun RemindMeApp(
                 HomeScreen(
                     listOfReminders,
                     onFloatingButtonClicked = {navigateToAddReminder()},
+                    onDeleteClicked = {
+                        coroutineScope.launch {
+                            homeScreenViewModel.deleteItem(it)
+                        }
+                    },
                     modifier = Modifier.padding(8.dp)
                 )
             }
