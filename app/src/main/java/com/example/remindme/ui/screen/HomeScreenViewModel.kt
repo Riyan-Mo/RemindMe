@@ -31,6 +31,10 @@ class HomeScreenViewModel(
         reminderDatabaseRepository.insertReminder(reminder)
     }
 
+    suspend fun deleteItem(reminder: Reminder): Boolean {
+        return reminderDatabaseRepository.deleteReminder(reminder)
+    }
+
     companion object {
         val factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
