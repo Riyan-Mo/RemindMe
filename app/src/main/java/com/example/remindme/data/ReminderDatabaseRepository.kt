@@ -5,7 +5,9 @@ import kotlinx.coroutines.flow.Flow
 interface ReminderDatabaseInterface{
     fun getAllRemindersStream(): Flow<List<Reminder>>
 
-    suspend fun insertReminder(reminder: Reminder): Unit
+    suspend fun insertReminder(reminder: Reminder)
+
+    suspend fun deleteReminder(reminder: Reminder): Boolean
 }
 
 class ReminderDatabaseRepository(
@@ -17,5 +19,9 @@ class ReminderDatabaseRepository(
 
     override suspend fun insertReminder(reminder: Reminder) {
         reminderDao.insertReminder(reminder)
+    }
+
+    override suspend fun deleteReminder(reminder: Reminder): Boolean {
+        return reminderDao.deleteReminder(reminder) > 0
     }
 }
