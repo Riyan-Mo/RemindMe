@@ -20,11 +20,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.remindme.data.Reminder
 import com.example.remindme.ui.screen.components.ReminderItem
+import kotlinx.coroutines.Job
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
     reminders: List<Reminder>,
+    onDeleteClicked: (reminder: Reminder) -> Job,
     modifier: Modifier = Modifier,
     onFloatingButtonClicked: () -> Unit
 ) {
@@ -56,7 +58,7 @@ fun HomeScreen(
                     .fillMaxWidth()
             ) {
                 items(reminders) {
-                    ReminderItem(it, {}, modifier = modifier)
+                    ReminderItem(it, {}, onDeleteClicked = onDeleteClicked, modifier = modifier)
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.example.remindme.ui.screen
 
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.remindme.data.Reminder
 import com.example.remindme.data.Type
-import java.time.LocalTime
+import java.time.LocalDateTime
 
 fun validateInput(title: String): Boolean {
     return title.isNotBlank()
@@ -37,7 +38,7 @@ fun NewReminder(
     reminder: Reminder,
     modifier: Modifier = Modifier
 ) {
-    val localTime = LocalTime.now()
+    val localTime = LocalDateTime.now()
     var title by rememberSaveable {
         mutableStateOf(reminder.title)
     }
@@ -66,6 +67,7 @@ fun NewReminder(
         Button(
             onClick = {
                 if(validateInput(title = title)){
+                    Log.e("New Reminder", localTime.toString())
                     onSubmit(
                         Reminder(
                             title = title,
